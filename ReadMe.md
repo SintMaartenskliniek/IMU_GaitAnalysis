@@ -1,26 +1,23 @@
-The data folder has the following structure:
+Gait analysis with inertial measurement units
 
-- data
-	- CVA (data of stroke participants)
-		- 900_CVA_## (folder for participant based on study ID)
-			- Vicon (folder with vicon, gold standard, data)
-				- GRAIL (folder with vicon data from GRAIL trials)
-			- Xsens (folder with IMU sensordata)
-				- exported### (.txt files per sensor)
-		- ...
-
-	- Healthy controls (data of healthy participants)
-		- 900_V_## (folder for participant based on study ID)
-			- Vicon (folder with vicon, gold standard, data)
-				- GBA (folder with vicon data from overground walking trials)
-				- GRAIL (folder with vicon data from GRAIL trials)
-			- Xsens (folder with IMU sensordata)
-				- exported### (.txt files per sensor)
-				- ...
-		- ...
-
-The vicon data is saved as .c3d files
-The xsens sensordata is initially saved as an .mtb file for each trial, 
-all trials are exported with MTManager to .txt files in the different "exported###" folders for each trial (see "MT Manager export settings.PNG" figure for the export settings).
+** PUBLICATION OF THIS VALIDATION WILL FOLLOW **
 
 
+*Version of the code used in this publication can be found in the **Validation study** release.*
+
+ 
+ 
+ 
+Run the **validation_study.py** code to analyze the spatiotemporal parameters of the gait data used in this study.
+- The folder **data** contains the data used in this study.
+- The folder **functions_validationstudy** contains the functions the main script requires to run the validation and import all data in a structured way.
+- The folder **gaittool** contains functions to import, preprocess and process the data of a single trial.
+- The folder **VICON_functions** contains functions to analyze the optical motion capture data.
+
+Explanation of the code and the order of running the code is commented through the scripts.
+Explanation of the data is provided in the ReadMe file in the folder "data".
+
+In case you are only interested in the gait analysis pipeline, only the code in the folder "gaittool" is of importance.
+The "gaittool" folder contains functions to import, preprocess and process IMU data, and can be run with the following commands:
+- import gaittool.feet_processor.test_processor as process
+- data, errors = process(*"full path to your dataset here"*)
