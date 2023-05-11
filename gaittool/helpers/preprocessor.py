@@ -54,6 +54,9 @@ from .xsens_dot_helpers import calcCalGyr, calcCalAcc, eulFromQuat, calcFreeAcc
 def data_filelist(datafolder):
     
     # Check files in datafolder
+    dirpath = str()
+    dirnames = list()
+    filenames = list()
     for (dirpath, dirnames, filenames) in os.walk(datafolder):
         break
     
@@ -61,41 +64,46 @@ def data_filelist(datafolder):
     sensorspecfile = False # default
     sample_frequency = False # default
     
-    for i in range(0,len(filenames)):
-        if 'sensorspec.json' in filenames[i]:
-            with open(dirpath+'/'+filenames[i]) as f:
-                sensorspec = json.load(f)
-                f.close()
-            sensorspecfile = True # sensorspec file was found
+    if len(filenames)>0:
+        for i in range(0,len(filenames)):
+            if 'sensorspec.json' in filenames[i]:
+                with open(dirpath+'/'+filenames[i]) as f:
+                    sensorspec = json.load(f)
+                    f.close()
+                sensorspecfile = True # sensorspec file was found
        
     if sensorspecfile == False:
+        sensorspec = dict()
         print('Sensor specification files is missing, looking for recognizable sensor files to assign default sensor specifications...')
-        for i in range(0,len(filenames)):
-            # Check if there is a file that ends with '.h5' if no sensorspec.json file is found
-            if '.h5' in filenames[i] or datafolder.startswith('Mobility_Lab') or 'StudyMetadata' in filenames[i] or 'Walk_trials.csv' in filenames[i]:
-                
-                sensortype = 'apdm'
-                print('Sensor files recognized as "APDM", assign default sensor specifications...')
-                
-                if '833' in filenames[i]: # data is from iGait study
-                    continue
-                
-                else:
-                    for j in range(0, len(dirnames)):
-                        if 'raw' in dirnames[j]:
-                            rawdir = dirnames[j]
-                            
-                    for j in range(0, len(filenames)):
-                        if filenames[j].startswith('Walk_trials') and filenames[j].endswith('.csv'):
-                            walkinfo = pd.read_csv((datafolder + '/' + filenames[j]), delimiter='\;', engine='python')
-                            if len(walkinfo.columns) < 2:
-                                walkinfo = pd.read_csv((datafolder + '/' + filenames[j]), delimiter='","', engine='python')
-        
-                    findcondition = walkinfo[walkinfo['Condition'] == '2-minute']
-                    if len(findcondition) > 0:
-                        file = (findcondition['File Name']).to_string(index = False)[:]
+        if datafolder.endswith('.h5'):
+            sensortype = 'apdm'
+        else:
+            for i in range(0,len(filenames)):
+                # Check if there is a file that ends with '.h5' if no sensorspec.json file is found
+                if '.h5' in filenames[i] or datafolder.startswith('Mobility_Lab') or 'StudyMetadata' in filenames[i] or 'Walk_trials.csv' in filenames[i]:
+                    
+                    sensortype = 'apdm'
+                    print('Sensor files recognized as "APDM", assign default sensor specifications...')
+                    
+                    if '833' in filenames[i]: # data is from iGait study
+                        continue
+                    
                     else:
-                        file = 'remove'
+                        for j in range(0, len(dirnames)):
+                            if 'raw' in dirnames[j]:
+                                rawdir = dirnames[j]
+                                
+                        for j in range(0, len(filenames)):
+                            if filenames[j].startswith('Walk_trials') and filenames[j].endswith('.csv'):
+                                walkinfo = pd.read_csv((datafolder + '/' + filenames[j]), delimiter='\;', engine='python')
+                                if len(walkinfo.columns) < 2:
+                                    walkinfo = pd.read_csv((datafolder + '/' + filenames[j]), delimiter='","', engine='python')
+            
+                        findcondition = walkinfo[walkinfo['Condition'] == '2-minute']
+                        if len(findcondition) > 0:
+                            file = (findcondition['File Name']).to_string(index = False)[:]
+                        else:
+                            file = 'remove'
             
             # if no sensorspec.json file available, and data is not APDM format ('.h5')
             else:
@@ -161,7 +169,10 @@ def data_filelist(datafolder):
         filepaths = getFilePathsFromSensorspec(datafolder, sensorspec)
     
     elif sensortype == 'apdm':
-        if '833' in filenames[0]: # data is from iGait study
+        if datafolder.endswith('.h5'):
+            filepaths=list()
+            filepaths.append(datafolder)
+        elif '833' in filenames[0]: # data is from iGait study
             filepaths=list()
             for k in range(0, len(filenames)):
                 filepaths.append(datafolder + '/' + filenames[k])
@@ -604,8 +615,8 @@ def data_preprocessor(filepaths, sensortype, **kwargs):
             
             dataleft = data['Left foot']
             dataright = data['Right foot']
-            dataleftshank = data['Left shank']
-            datarightshank = data['Right shank']
+            dataleftshank = dict()
+            datarightshank = dict()
             datalumbar = data['Lumbar']
             datasternum = data['Sternum']
         elif sensortype == 'apdm_homemonitoring':
@@ -1108,7 +1119,7 @@ def extractGaitupData(gaitupData, intSync):
             
     return acc, gyr, mag, acc_ef, q, e
     
-def syncData(sensor_type, dataleft, dataright, datalumbar, datasternum):
+def syncData(sensor_type, dataleft, dataright, dataleftshank, datarightshank, datalumbar, datasternum):
     
     syncFailed = False
     intLeft = intRight = intLeftShank = intRightShank = intLumbar = intSternum = tVec = []
