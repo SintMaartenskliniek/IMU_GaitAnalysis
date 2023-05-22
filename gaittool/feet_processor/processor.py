@@ -1,25 +1,24 @@
 import numpy as np
 import statistics as st
 import time
-import scipy
-import matplotlib.pyplot as plt
 from ..helpers.preprocessor import data_filelist, data_preprocessor
-from ..helpers.spatiotemporalfunctions import lateroflexion, walkingsamples, ststransfers, nonactivesamples, stepcount, \
-    cadence, footAngle, swingtime, stancetime, stridetime, steptime, doublesupport, velocity, gaitspeed, \
-    turnidentification, turnparameters, positionestimation, stridelength, asymmetry, leanangle
-from .analyzedataSteady import analyzedataSteady
+from ..helpers.spatiotemporalfunctions import walkingsamples, ststransfers, nonactivesamples, stepcount, cadence, swingtime, stancetime, stridetime, steptime, doublesupport, velocity, gaitspeed, turnidentification, turnparameters, positionestimation, stridelength, asymmetry, leanangle, trunk_ROM, footAngle
 from .analyzedata import analyzedata
-
+from .analyzedataSteady import analyzedataSteady
 
 def process(data, showfigure, removeSteps):
-    # data['Missing Sensors'].append('Lumbar')
-    # data.pop('Lumbar')
-    # Error handeling
-    errors = {}
+    # Error handling
+    errors={}
     errors['Wrong sample frequency'] = False
     errors['High amount missing samples'] = False
     errors['No steady state gait'] = False
     errors['Trial type'] = False
+    errors['No walking period'] = False
+
+    # Find gait events and gait phases
+    data, errors = analyzedata(data, errors, showfigure)
+
+    # Determine Spatiotemporal parameters
     data['Spatiotemporals'] = dict()
 
     if 'Lumbar' not in data['Missing Sensors'] or 'Sternum' not in data['Missing Sensors']:
@@ -58,13 +57,8 @@ def process(data, showfigure, removeSteps):
         # TODO: Add specific HomeMonitoring implementation if needed.
 
     # Walkingtime / Non-active time
-    # According to Fang et al. (2018) full gait cycle from Heel-Strike to
-    # Heel-Strike of the same leg. Max. found duration: 1.15(0.13) seconds
-    # Assumed is that a person stopped walking when no new Toe-Off point is
-    # found within 5 seconds after the last ToeOff point.
-    data = walkingsamples(data)  # data['Left foot']['Gait Phases']['Walking samples'] >> Right foot contains same data
-    data['Spatiotemporals']['Walking time (s)'] = round(
-        (len(data['Left foot']['Gait Phases']['Walking samples']) / data['Sample Frequency (Hz)']), 2)
+    data = walkingsamples(data, errors)  # data['Left foot']['Gait Phases']['Walking samples'] >> Right foot contains same data
+    data['Spatiotemporals']['Walking time (s)'] = round((len(data['Left foot']['Gait Phases']['Walking samples'])/data['Sample Frequency (Hz)']),2)
 
     # Assumed is that a person is non-active when sample is not identified as walking.
     data = nonactivesamples(data)  # data['Spatiotemporals']['Non-Active samples']
@@ -113,14 +107,11 @@ def process(data, showfigure, removeSteps):
 
     # Steptime
     # Time between Heel-Strike of one foot and Heel-Strike of the other foot
-    data = steptime(data)
-
-    # Foot angle at HS and TO
-    # data = footAngle(data)
+    data = steptime(data, errors)
 
     # Double-Support time
     # Time between Heel-Stike of one foot and Toe-Off of the other foot (time that both feet are in stance-phase)
-    data = doublesupport(data)
+    data = doublesupport(data, errors)
 
     # Double-Support time as percentage of gaitcycle
     data['Spatiotemporals']['Double support time as percentage of gaitcycle left (%)'] = round(
@@ -143,58 +134,47 @@ def process(data, showfigure, removeSteps):
             'Stride time right (s)'] * 100, 1)
 
     # Velocity estimation
-    data = velocity(data, showfigure)
+    data = velocity(data, errors, showfigure)
 
     # Position estimation
-    data = positionestimation(data, showfigure)
+    data = positionestimation(data, errors, showfigure)
 
-    #
+
     # Stride length
-    data = stridelength(data, showfigure)
-    # data['Spatiotemporals']['Stride length - straight walking (m)'] = round(((np.median(data['Left foot']['derived']['Stride length - straight walking (m)'][:,2]) + np.median(data['Right foot']['derived']['Stride length - straight walking (m)'][:,2]))/2),2)
-    data['Spatiotemporals']['Stride length - average steady state walking (m)'] = round(np.nanmedian(np.sort(
-        np.append(data['Left foot']['derived']['Stride length - no 1 steps around turn (m)'][:, 2],
-                  data['Right foot']['derived']['Stride length - no 1 steps around turn (m)'][:, 2]))), 2)
-    data['Spatiotemporals']['Stride length - average all strides (m)'] = round(((data['Left foot']['derived'][
-                                                                                     'Stride length - average all strides (m)'] +
-                                                                                 data['Right foot']['derived'][
-                                                                                     'Stride length - average all strides (m)']) / 2),
-                                                                               2)
+    data = stridelength(data,errors, showfigure)
+    data['Spatiotemporals']['Stride length - average steady state walking (m)'] = round(np.nanmedian(np.sort(np.append(data['Left foot']['derived']['Stride length - no 1 steps around turn (m)'][:, 2],data['Right foot']['derived']['Stride length - no 1 steps around turn (m)'][:, 2]))), 2)
+    data['Spatiotemporals']['Stride length - average all strides (m)'] = round(((data['Left foot']['derived']['Stride length - average all strides (m)'] +data['Right foot']['derived']['Stride length - average all strides (m)']) / 2),2)
 
     # # Stride time
     # Part of gait speed function
 
     # Gait speed
-    data, errors = gaitspeed(data, errors)
+    data = gaitspeed(data, errors)
 
     # Distance walked
-    data['Spatiotemporals']['Walked distance (m)'] = round(np.mean(
-        [np.sum(data['Left foot']['derived']['Stride length - all strides (m)'][:, 2]),
-         np.sum(data['Right foot']['derived']['Stride length - all strides (m)'][:, 2])]),
-                                                           2)  # round((data['Spatiotemporals']['Gait speed (km/h)']/3.6 * data['Spatiotemporals']['Walking time (s)']), 2)
+    data['Spatiotemporals']['Walked distance (m)'] = round( np.mean([np.sum(data['Left foot']['derived']['Stride length - all strides (m)'][:,2]), np.sum(data['Right foot']['derived']['Stride length - all strides (m)'][:,2])])  , 2) #round((data['Spatiotemporals']['Gait speed (km/h)']/3.6 * data['Spatiotemporals']['Walking time (s)']), 2)
 
     # Calculate STS transfers if L-test is true
-    if ltest == True:
+    if data['trialType'] == 'L-test' or data['trialType'] == 'STS-transfer':
         data, errors = ststransfers(data, errors)
         if 'Sternum' not in data['Missing Sensors']:
-            ststime = round(
-                np.sum(data['Sternum']['derived']['Transfers'][:, 1] - data['Sternum']['derived']['Transfers'][:, 0]) /
-                data['Sample Frequency (Hz)'], 2)
+            ststime = round( np.sum(data['Sternum']['derived']['Transfers'][:,1]- data['Sternum']['derived']['Transfers'][:,0])/data['Sample Frequency (Hz)'] , 2 )
         elif 'Lumbar' not in data['Missing Sensors']:
-            ststime = round(
-                np.sum(data['Lumbar']['derived']['Transfers'][:, 1] - data['Lumbar']['derived']['Transfers'][:, 0]) /
-                data['Sample Frequency (Hz)'], 2)
-        data['Spatiotemporals']['L-test time (s)'] = round(data['Spatiotemporals']['Walking time (s)'] + ststime, 2)
+            ststime = round( np.sum(data['Lumbar']['derived']['Transfers'][:,1] - data['Lumbar']['derived']['Transfers'][:,0])/data['Sample Frequency (Hz)'] , 2 )
+        data['Spatiotemporals']['L-test time (s)'] = round( data['Spatiotemporals']['Walking time (s)']+ststime , 2)
 
     # Lean angle
-    if 'Sternum' not in data['Missing Sensors'] and ltest == True:
+    if 'Sternum' not in data['Missing Sensors'] and (data['trialType'] == 'L-test' or data['trialType'] == 'STS-transfer'):
         data = leanangle(data, showfigure)
 
+    # Trunk coronal range of motion
+    if 'Sternum' not in data['Missing Sensors']:
+        data = trunk_ROM(data)
+
     # Check if sample frequency makes sense based on output:
-    if data['Spatiotemporals']['Gait speed (km/h)'] < 1 and data['Spatiotemporals'][
-        'Double support time as percentage of gaitcycle left (%)'] > 30 and data['Spatiotemporals'][
-        'Double support time as percentage of gaitcycle right (%)'] > 30:
-        errors['Wrong sample frequency'] = True
+    if errors['No walking period'] == False:
+        if data['Spatiotemporals']['Gait speed (km/h)'] < 1 and data['Spatiotemporals']['Double support time as percentage of gaitcycle left (%)'] > 30 and data['Spatiotemporals']['Double support time as percentage of gaitcycle right (%)'] > 30:
+            errors['Wrong sample frequency'] = True
 
     if errors['Wrong sample frequency'] == True:
         print('Please check sample frequency for this measurement in MTManager')
@@ -202,26 +182,25 @@ def process(data, showfigure, removeSteps):
         print('No steady state gait was detected, average gait speed was calculated over all strides including turns!')
 
     # Determine foot angle at IC and TC
-    data = footAngle(data)
-    # Determine lateroflexion
-    data = lateroflexion(data)
-    # TODO: Implement steady state function here? Make extra Spatiotemporals steady state here
-    # data['Spatiotemporals steady state'] = dict()
+    data = footAngle(data, errors)
 
     return data, errors
 
 
 def test_processor(datafolder, **kwargs):
-    t = time.time()
+
     # Define visablitiy of debug-figures
-    showfigure = 'hide'
+    showfigure = 'hide'  # 'view'
 
     # Define list of filepaths and sensortype of the datarecordings
-    filepaths, sensortype = data_filelist(datafolder)
+    filepaths, sensortype, sample_frequency = data_filelist(datafolder)
 
     if len(filepaths) > 0:
         # Define data dictionary with all sensordata
-        data = data_preprocessor(filepaths, sensortype, **kwargs)
+        if sample_frequency == False:
+            data = data_preprocessor(filepaths, sensortype)
+        else:
+            data = data_preprocessor(filepaths, sensortype, sample_frequency=sample_frequency)
 
         # Determine trialType based on foldername or kwargs item
         # default is 'Unknown from foldername'
@@ -236,7 +215,7 @@ def test_processor(datafolder, **kwargs):
             if key == 'trialType':
                 data['trialType'] = value
 
-        if len(data) > 0:
+        if len(data)>0:
             return process(data, showfigure)
     else:
         data = {}
