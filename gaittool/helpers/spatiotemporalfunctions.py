@@ -688,7 +688,10 @@ def turnparameters(data):
                 newturnstart = np.append(newturnstart, idxturn[i+1])
                 newendturn = np.append(newendturn, idxturn[i])
         newendturn = np.sort(newendturn)
-        
+    else:
+        newturnstart=np.array([])
+        newendturn=np.array([])
+
         yawunwrap = np.unwrap(EUL[:,2],150)
         allPeakTurnVelocity = np.array([])
         peaks180deg = np.array([])
