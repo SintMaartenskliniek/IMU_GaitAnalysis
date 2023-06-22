@@ -21,5 +21,3 @@ In case you are only interested in the gait analysis pipeline, only the code in 
 The "gaittool" folder contains functions to import, preprocess and process IMU data, and can be run with the following commands:
 - import gaittool.feet_processor.test_processor as process
 - data, errors = process(*"full path to your dataset here"*)
-
-* Check function submodule

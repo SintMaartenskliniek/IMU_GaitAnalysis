@@ -1,8 +1,0 @@
-{
-    "leftfoot": "00B40AC5.txt",
-    "rightfoot": "00B40A23.txt",
-    "leftlateralankle": "00B40ACF.txt",
-    "rightlateralankle": "00B40AC7.txt",
-    "lumbar": "00B40A8D.txt",
-"sternum": "00B40A40.txt"
-}
