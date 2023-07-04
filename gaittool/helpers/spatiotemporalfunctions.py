@@ -748,13 +748,13 @@ def turnparameters(data):
         elif 'Sternum' not in data['Missing Sensors']:
             data['Sternum']['derived']['Peak turn velocity - all turns (deg/s)'] = allPeakTurnVelocity
             data['Sternum']['derived']['Peak turn velocity - 180 deg turns (deg/s)'] = peaks180deg
-    else:
-        data['Spatiotemporals']['Peak turn velocity - average (deg/s)'] = np.nan
-        data['Spatiotemporals']['Peak turn velocity - standard deviation (deg/s)'] = np.nan
-        if 'Lumbar' not in data['Missing Sensors']:
-            data['Lumbar']['derived']['Peak turn velocity - all turns (deg/s)'] = np.nan
-        elif 'Sternum' not in data['Missing Sensors']:
-            data['Sternum']['derived']['Peak turn velocity - all turns (deg/s)'] = np.nan
+        else:
+            data['Spatiotemporals']['Peak turn velocity - average (deg/s)'] = np.nan
+            data['Spatiotemporals']['Peak turn velocity - standard deviation (deg/s)'] = np.nan
+            if 'Lumbar' not in data['Missing Sensors']:
+                data['Lumbar']['derived']['Peak turn velocity - all turns (deg/s)'] = np.nan
+            elif 'Sternum' not in data['Missing Sensors']:
+                data['Sternum']['derived']['Peak turn velocity - all turns (deg/s)'] = np.nan
 
     return data
 
