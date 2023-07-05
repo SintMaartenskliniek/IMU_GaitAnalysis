@@ -564,7 +564,7 @@ def histogram_gait_events(IMU_regular, OMCS_regular, IMU_irregular, OMCS_irregul
     # ax.set_xticklabels(labels = diffvalues_regular[np.argwhere(diffvalues_regular*100 % 2 == 0)].flatten(), fontsize=15) 
     
     if 'Healthy' in labelname:
-        stopval = 4501
+        stopval = 2251
         stepval = 250
     elif 'Stroke' in labelname:
         stopval = 601
@@ -611,6 +611,19 @@ def pearson_correlation(IMU, OMCS):
 def post_hoc_forcedata(OMCS, OMCS_spatiotemporals, IMU, files):
     # Check which walking trials have focedata (vertical direction)
     forcedata = dict()
+    
+    for trial in files['GRAIL']:
+        try:
+            OMCS[trial]['Analog data']['Force.Fz1'] = np.array([])
+            OMCS[trial]['Analog data']['Force.Fz2'] = np.array([])
+            for signal in OMCS[trial]['Analog data']:
+                if 'Force.Fz1 ' in signal:
+                    OMCS[trial]['Analog data']['Force.Fz1'] = OMCS[trial]['Analog data'][signal]
+                if 'Force.Fz2 ' in signal:
+                    OMCS[trial]['Analog data']['Force.Fz2'] = OMCS[trial]['Analog data'][signal]
+        except KeyError:
+            pass
+        
     for trial in files['GRAIL']:
         try:
             if len(OMCS[trial]['Analog data']['Force.Fz1'])>0:

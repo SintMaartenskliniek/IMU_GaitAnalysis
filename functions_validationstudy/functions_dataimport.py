@@ -609,6 +609,11 @@ def sort_files(allfilenames):
     files['Overground'] = [] # Overground lab
     
     for key in allfilenames:
+        if '_FS0' in key:
+            if 'CVA' in key:
+                files['GRAIL stroke regular'].append(key)
+                files['GRAIL regular'].append(key)
+                files['GRAIL'].append(key)
         if '_SP0' in key:
             if key == '900_V_pp01_SP03.c3d': # Fixed speed trial, accidentily wrongly named
                 pass
