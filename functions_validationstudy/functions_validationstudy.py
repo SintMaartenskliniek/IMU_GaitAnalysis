@@ -305,11 +305,14 @@ def bland_altman_plot_spatiotemporals_2(regular_IMU, regular_OMCS, irregular_IMU
     # Check for inputname in **kwargs items
     eventType = str()
     unit = str()
+    group = str()
     for key, value in kwargs.items():
         if key == 'eventType':
             eventType = value
         if key == 'unit':
             unit = value
+        if key == 'group':
+            group = value
     
     fig = plt.subplots(figsize=(30*cm, 25*cm))
     
@@ -318,8 +321,10 @@ def bland_altman_plot_spatiotemporals_2(regular_IMU, regular_OMCS, irregular_IMU
     # plt.subplots_adjust(left=0.100, right=0.740, top=0.900, bottom=0.105)
     
     # Regular walking
-    plt.scatter(mean_regular, diff_regular, edgecolor = '#004D43', facecolor='None', marker = 'o', s=100, label='Regular gait') # SMK GREEN
-    
+    if group == 'stroke':
+        plt.scatter(mean_regular, diff_regular, edgecolor = '#789b73', facecolor='None', marker = 'o', s=100, label='Regular gait') # GREY-GREEN
+    else:
+        plt.scatter(mean_regular, diff_regular, edgecolor = '#004D43', facecolor='None', marker = 'o', s=100, label='Regular gait') # SMK GREEN
     # plt.axhline(md_regular,           color='#337068', linestyle='-', linewidth = 5)
     if mean_regular.size > 0:
         plt.plot(mean_regular[mask_reg], predictions_regular, color='#337068', linestyle='-', linewidth = 5)
@@ -333,7 +338,10 @@ def bland_altman_plot_spatiotemporals_2(regular_IMU, regular_OMCS, irregular_IMU
     
     # Irregular walking
     if irregular_IMU.size > 0:
-        plt.scatter(mean_irregular, diff_irregular, edgecolor='#E79419', facecolor='None', marker='^', s=100, label = 'Irregular, precision stepping, gait') # SMK ORANGE
+        if group == 'stroke':
+            plt.scatter(mean_irregular, diff_irregular, edgecolor='#fac205', facecolor='None', marker='^', s=100, label = 'Irregular, precision stepping, gait') # GOLDENROT
+        else:
+            plt.scatter(mean_irregular, diff_irregular, edgecolor='#E79419', facecolor='None', marker='^', s=100, label = 'Irregular, precision stepping, gait') # SMK ORANGE
     
         # plt.axhline(md_irregular,           color='#ECA947', linestyle='-', linewidth = 5)
         plt.plot(mean_irregular[mask_irreg], predictions_irregular, color='#ECA947', linestyle='-', linewidth = 5)
@@ -441,7 +449,7 @@ def bland_altman_plot_spatiotemporals_4(HCregular_IMU, HCregular_OMCS, HCirregul
     
     # HC Irregular walking
     if HCirregular_IMU.size > 0:
-        plt.scatter(mean_HCirregular, diff_HCirregular, edgecolor='#004D43', facecolor='None', marker='^', s=100, label = 'Healthy irregular gait') # SMK ORANGE
+        plt.scatter(mean_HCirregular, diff_HCirregular, edgecolor='#E79419', facecolor='None', marker='^', s=100, label = 'Healthy irregular gait') # SMK ORANGE
     
         # plt.axhline(md_HCirregular,           color='#ECA947', linestyle='-', linewidth = 5)
         # # plt.text(max(mean_irregular)-0.05*np.nanmean(mean_irregular), md_irregular, md_irregular_string, fontsize=16)
@@ -451,7 +459,7 @@ def bland_altman_plot_spatiotemporals_4(HCregular_IMU, HCregular_OMCS, HCirregul
         # # plt.text(max(mean_irregular)-0.02*np.nanmean(mean_irregular), md_irregular - 1.96*sd_irregular, lb_string_irregular, fontsize=16)
     
     # STR Regular walking
-    plt.scatter(mean_STRregular, diff_STRregular, edgecolor = '#E79419', facecolor='None', marker = 'o', s=100, label='Stroke regular gait') # SMK GREEN
+    plt.scatter(mean_STRregular, diff_STRregular, edgecolor = '#789b73', facecolor='None', marker = 'o', s=100, label='Stroke regular gait') # SMK GREEN >> GREY-GREEN
     
     # plt.axhline(md_STRregular,           color='#337068', linestyle='-', linewidth = 5)
     # plt.text(min(mean_STRregular), md_STRregular, md_STRregular_string, fontsize=14)
@@ -464,7 +472,7 @@ def bland_altman_plot_spatiotemporals_4(HCregular_IMU, HCregular_OMCS, HCirregul
     
     # STR Irregular walking
     if STRirregular_IMU.size > 0:
-        plt.scatter(mean_STRirregular, diff_STRirregular, edgecolor='#E79419', facecolor='None', marker='^', s=100, label = 'Stroke irregular gait') # SMK ORANGE
+        plt.scatter(mean_STRirregular, diff_STRirregular, edgecolor='#fac205', facecolor='None', marker='^', s=100, label = 'Stroke irregular gait') # SMK ORANGE >> GOLDENROT
     
         # plt.axhline(md_STRirregular,           color='#ECA947', linestyle='-', linewidth = 5)
         # # plt.text(max(mean_irregular)-0.05*np.nanmean(mean_irregular), md_irregular, md_irregular_string, fontsize=16)

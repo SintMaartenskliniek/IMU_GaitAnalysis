@@ -125,8 +125,11 @@ def readmarkerdata (filepath, **kwargs):
             markerdata[markerlabels[i].split(' ')[0]] = np.transpose(np.array([marker_x, marker_y,marker_z]))
     
     analogdata=dict()
-    for i in range(0,len(analoglabels)):
-        analogdata[analoglabels[i]] = analog_data[:,i]
+    try:
+        for i in range(0,len(analoglabels)):
+            analogdata[analoglabels[i]] = analog_data[:,i]
+    except:
+        pass
     
     actual_start_frame = reader.first_frame
     actual_stop_frame = reader.last_frame

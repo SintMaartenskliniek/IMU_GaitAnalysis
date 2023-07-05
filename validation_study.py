@@ -21,6 +21,8 @@ import os
 from functions_validationstudy.functions_dataimport import dataimport, sort_files
 from functions_validationstudy.functions_validationstudy import analyze_OMCS, stride_by_stride, bland_altman_plot_spatiotemporals_2, bland_altman_plot_spatiotemporals_4, histogram_gait_events, post_hoc_forcedata
 
+from scipy import stats
+
 # ---------- USER INPUTS REQUIRED ---------- #
 # Set trialtype you wish to analyze to 'True'
 analyze_trialtypes = dict()
@@ -254,17 +256,17 @@ for parameter in SbS_IMU:
             variability_OMCS['Healthy']['Overground'][parameter] = np.append(variability_OMCS['Healthy']['Overground'][parameter], (sd_stp_omcs/m_stp_omcs)*100)
         
 # Bland-Altman-like analysis
-bland_altman_plot_spatiotemporals_2(strides_regular_IMU['Healthy']['Stride length (m)'], strides_regular_OMCS['Healthy']['Stride length (m)'], strides_irregular_IMU['Healthy']['Stride length (m)'], strides_irregular_OMCS['Healthy']['Stride length (m)'], eventType = 'Healthy  -  Stride length', unit = '(m)')
-bland_altman_plot_spatiotemporals_2(strides_regular_IMU['Healthy']['Stride time (s)'], strides_regular_OMCS['Healthy']['Stride time (s)'], strides_irregular_IMU['Healthy']['Stride time (s)'], strides_irregular_OMCS['Healthy']['Stride time (s)'], eventType = 'Healthy  -  Stride time', unit = '(s)')
-bland_altman_plot_spatiotemporals_2(strides_regular_IMU['Healthy']['Stride velocity (m/s)'], strides_regular_OMCS['Healthy']['Stride velocity (m/s)'], strides_irregular_IMU['Healthy']['Stride velocity (m/s)'], strides_irregular_OMCS['Healthy']['Stride velocity (m/s)'], eventType = 'Healthy  -  Stride velocity', unit = '(m/s)')
+bland_altman_plot_spatiotemporals_2(strides_regular_IMU['Healthy']['Stride length (m)'], strides_regular_OMCS['Healthy']['Stride length (m)'], strides_irregular_IMU['Healthy']['Stride length (m)'], strides_irregular_OMCS['Healthy']['Stride length (m)'], eventType = 'Healthy  -  Stride length', unit = '(m)', group='healthy')
+bland_altman_plot_spatiotemporals_2(strides_regular_IMU['Healthy']['Stride time (s)'], strides_regular_OMCS['Healthy']['Stride time (s)'], strides_irregular_IMU['Healthy']['Stride time (s)'], strides_irregular_OMCS['Healthy']['Stride time (s)'], eventType = 'Healthy  -  Stride time', unit = '(s)', group='healthy')
+bland_altman_plot_spatiotemporals_2(strides_regular_IMU['Healthy']['Stride velocity (m/s)'], strides_regular_OMCS['Healthy']['Stride velocity (m/s)'], strides_irregular_IMU['Healthy']['Stride velocity (m/s)'], strides_irregular_OMCS['Healthy']['Stride velocity (m/s)'], eventType = 'Healthy  -  Stride velocity', unit = '(m/s)', group='healthy')
 
-bland_altman_plot_spatiotemporals_2(strides_regular_IMU['Stroke']['Stride length (m)'], strides_regular_OMCS['Stroke']['Stride length (m)'], strides_irregular_IMU['Stroke']['Stride length (m)'], strides_irregular_OMCS['Stroke']['Stride length (m)'], eventType = 'Stroke  -  Stride length', unit = '(m)')
-bland_altman_plot_spatiotemporals_2(strides_regular_IMU['Stroke']['Stride time (s)'], strides_regular_OMCS['Stroke']['Stride time (s)'], strides_irregular_IMU['Stroke']['Stride time (s)'], strides_irregular_OMCS['Stroke']['Stride time (s)'], eventType = 'Stroke  -  Stride time', unit = '(s)')
-bland_altman_plot_spatiotemporals_2(strides_regular_IMU['Stroke']['Stride velocity (m/s)'], strides_regular_OMCS['Stroke']['Stride velocity (m/s)'], strides_irregular_IMU['Stroke']['Stride velocity (m/s)'], strides_irregular_OMCS['Stroke']['Stride velocity (m/s)'], eventType = 'Stroke  -  Stride velocity', unit = '(m/s)')
+bland_altman_plot_spatiotemporals_2(strides_regular_IMU['Stroke']['Stride length (m)'], strides_regular_OMCS['Stroke']['Stride length (m)'], strides_irregular_IMU['Stroke']['Stride length (m)'], strides_irregular_OMCS['Stroke']['Stride length (m)'], eventType = 'Stroke  -  Stride length', unit = '(m)', group='stroke')
+bland_altman_plot_spatiotemporals_2(strides_regular_IMU['Stroke']['Stride time (s)'], strides_regular_OMCS['Stroke']['Stride time (s)'], strides_irregular_IMU['Stroke']['Stride time (s)'], strides_irregular_OMCS['Stroke']['Stride time (s)'], eventType = 'Stroke  -  Stride time', unit = '(s)', group='stroke')
+bland_altman_plot_spatiotemporals_2(strides_regular_IMU['Stroke']['Stride velocity (m/s)'], strides_regular_OMCS['Stroke']['Stride velocity (m/s)'], strides_irregular_IMU['Stroke']['Stride velocity (m/s)'], strides_irregular_OMCS['Stroke']['Stride velocity (m/s)'], eventType = 'Stroke  -  Stride velocity', unit = '(m/s)', group='stroke')
 
-bland_altman_plot_spatiotemporals_2(strides_overground_IMU['Stride length (m)'], strides_overground_OMCS['Stride length (m)'], np.array([]), np.array([]), eventType = 'Overground  -  Stride length', unit = '(m)')
-bland_altman_plot_spatiotemporals_2(strides_overground_IMU['Stride time (s)'], strides_overground_OMCS['Stride time (s)'], np.array([]), np.array([]), eventType = 'Overground  -  Stride time', unit = '(s)')
-bland_altman_plot_spatiotemporals_2(strides_overground_IMU['Stride velocity (m/s)'], strides_overground_OMCS['Stride velocity (m/s)'], np.array([]), np.array([]), eventType = 'Overground  -  Stride velocity', unit = '(m/s)')
+bland_altman_plot_spatiotemporals_2(strides_overground_IMU['Stride length (m)'], strides_overground_OMCS['Stride length (m)'], np.array([]), np.array([]), eventType = 'Overground  -  Stride length', unit = '(m)', group='healthy')
+bland_altman_plot_spatiotemporals_2(strides_overground_IMU['Stride time (s)'], strides_overground_OMCS['Stride time (s)'], np.array([]), np.array([]), eventType = 'Overground  -  Stride time', unit = '(s)', group='healthy')
+bland_altman_plot_spatiotemporals_2(strides_overground_IMU['Stride velocity (m/s)'], strides_overground_OMCS['Stride velocity (m/s)'], np.array([]), np.array([]), eventType = 'Overground  -  Stride velocity', unit = '(m/s)', group='healthy')
       
 histogram_gait_events(strides_regular_IMU['Healthy']['Initial contact'], strides_regular_OMCS['Healthy']['Initial contact'], strides_irregular_IMU['Healthy']['Initial contact'], strides_irregular_OMCS['Healthy']['Initial contact'], label='Healthy - Initial contact')
 histogram_gait_events(strides_regular_IMU['Healthy']['Terminal contact'], strides_regular_OMCS['Healthy']['Terminal contact'], strides_irregular_IMU['Healthy']['Terminal contact'], strides_irregular_OMCS['Healthy']['Terminal contact'], label='Healthy - Terminal contact')
@@ -349,59 +351,67 @@ for parameter in mean_IMU['Healthy']['Regular']:
     sdmomcsSI[parameter] = np.nanstd(mean_OMCS['Stroke']['Irregular'][parameter])
     
 # Length and weights of participants
-lengthsHealthy = np.array([168, 164, 166, 165, 183, 173, 168, 179, 186, 181, 180, 180, 170, 162, 166, 182, 174, 180, 179, 176])
-weightsHealthy = np.array([72, 74.8, 76.8, 67.8, 77.2, 62.4, 63.6, 69, 93, 77.6, 78.2, 88.6, 68.4, 66.2, 70.4, 77, 70, 76.8, 89.2, 73.4])
-lengthsStroke = np.array([162, 183, 178, 181, 171, 176, 184, 184, 180, 165])
-weightsStroke = np.array([70, 82, 71, 93, 91, 71, 95.4, 85, 76, 77])
+heightsHealthy = np.array([168, 164,  166,  165,  183,  173,  168,  179, 186, 181,  180,  180,  170,  162,  166,  182, 174, 180,  179,  176])
+weightsHealthy = np.array([72,  74.8, 76.8, 67.8, 77.2, 62.4, 63.6, 69,  93,  77.6, 78.2, 88.6, 68.4, 66.2, 70.4, 77,  70,  76.8, 89.2, 73.4])
+heightsStroke  = np.array([162, 183,  178,  181,  171,  176,  184,  184, 180, 165])
+weightsStroke  = np.array([70,  82,   71,   93,   91,   71,   95.4, 85,  76,  77])
+agesHealthy    = np.array([54,  69,   68,   68,   63,   51,   41,  43,  55,   41,   45,   53,   41,   59,   61,   79,  73,  72,   76,   72])
+agesStroke     = np.array([65,  57,   83,   60,   56,   45,   72,  68,  57,   49])
+genderHealthy  = np.array([10, 10]) #list    (['f', 'f',  'm',  'f',  'm',  'f',  'f', 'm', 'm',  'm',  'f',  'm',  'f',  'f',  'f',  'm', 'f', 'm',  'm',  'm'])
+genderStroke   = np.array([7,  3])  #list    (['f', 'm',  'm',  'm',  'm',  'f',  'm', 'm', 'm',  'f'])
 
-meanLengthHealthy = np.mean(lengthsHealthy)
-sdLengthHealthy = np.std(lengthsHealthy)
+
+meanHeightHealthy = np.mean(heightsHealthy)
+sdHeightHealthy = np.std(heightsHealthy)
 meanWeightHealthy = np.mean(weightsHealthy)
 sdWeightHealthy = np.std(weightsHealthy)
-meanLengthStroke = np.mean(lengthsStroke)
-sdLengthStroke = np.std(lengthsStroke)
+meanHeightStroke = np.mean(heightsStroke)
+sdHeightStroke = np.std(heightsStroke)
 meanWeightStroke = np.mean(weightsStroke)
 sdWeightStroke = np.std(weightsStroke)
 
-
-
+# Check for differences between group characteristics
+print('Mann-Whitney_U test for differences between height of the groups: ', stats.mannwhitneyu(heightsHealthy, heightsStroke))
+print('Mann-Whitney_U test for differences between weight of the groups: ', stats.mannwhitneyu(weightsHealthy, weightsStroke))
+print('Mann-Whitney_U test for differences between age of the groups: ', stats.mannwhitneyu(agesHealthy, agesStroke))
+print('Chi-square test for differences between genderdistribution of the groups: ', stats.chisquare(f_obs=genderHealthy/20, f_exp=genderStroke/10))
 
 # Uncomment this part if you wish to save an .xls file for further statistical analysis in R.
-# R_formatted_data = pd.DataFrame(columns=(['SubjectID', 'Trialtype', 'StrideNr', 'Stride time sensor', 'Stride length sensor', 'Stride velocity sensor', 'Stride time OMCS', 'Stride length OMCS', 'Stride velocity OMCS']))
-# for trial in SbS_IMU['Stride length (m)']:
-#     if trial in files['GRAIL healthy regular']:
-#         trialtype = 'GRAIL healthy regular'
-#     elif trial in files['GRAIL healthy irregular']:
-#         trialtype = 'GRAIL healthy irregular'
-#     elif trial in files['GRAIL stroke regular']:
-#         trialtype = 'GRAIL stroke regular'
-#     elif trial in files['GRAIL stroke irregular']:
-#         trialtype = 'GRAIL stroke irregular'
-#     elif trial in files['Overground']:
-#         trialtype = 'Overground'
+R_formatted_data = pd.DataFrame(columns=(['SubjectID', 'Trialtype', 'StrideNr', 'Stride time sensor', 'Stride length sensor', 'Stride velocity sensor', 'Stride time OMCS', 'Stride length OMCS', 'Stride velocity OMCS']))
+for trial in SbS_IMU['Stride length (m)']:
+    if trial in files['GRAIL healthy regular']:
+        trialtype = 'GRAIL healthy regular'
+    elif trial in files['GRAIL healthy irregular']:
+        trialtype = 'GRAIL healthy irregular'
+    elif trial in files['GRAIL stroke regular']:
+        trialtype = 'GRAIL stroke regular'
+    elif trial in files['GRAIL stroke irregular']:
+        trialtype = 'GRAIL stroke irregular'
+    elif trial in files['Overground']:
+        trialtype = 'Overground'
         
-#     for i in range(0, len(SbS_IMU['Initial contact'][trial])):
-#         df2 = pd.DataFrame({'SubjectID': [trial],
-#                         'Trialtype': [trialtype],
-#                         'StrideNr': [i],
+    for i in range(0, len(SbS_IMU['Initial contact'][trial])):
+        df2 = pd.DataFrame({'SubjectID': [trial],
+                        'Trialtype': [trialtype],
+                        'StrideNr': [i],
                         
-#                         'Stride time sensor': [SbS_IMU['Stride time (s)'][trial][i]],
-#                         'Stride length sensor': [SbS_IMU['Stride length (m)'][trial][i]],
-#                         'Stride velocity sensor': [SbS_IMU['Stride velocity (m/s)'][trial][i]],
-#                         'Initial contact sensor': [SbS_IMU['Initial contact'][trial][i]],
-#                         'Terminal contact sensor': [SbS_IMU['Terminal contact'][trial][i]],
+                        'Stride time sensor': [SbS_IMU['Stride time (s)'][trial][i]],
+                        'Stride length sensor': [SbS_IMU['Stride length (m)'][trial][i]],
+                        'Stride velocity sensor': [SbS_IMU['Stride velocity (m/s)'][trial][i]],
+                        'Initial contact sensor': [SbS_IMU['Initial contact'][trial][i]],
+                        'Terminal contact sensor': [SbS_IMU['Terminal contact'][trial][i]],
                         
-#                         'Stride time OMCS': [SbS_OMCS['Stride time (s)'][trial][i]],
-#                         'Stride length OMCS': [SbS_OMCS['Stride length (m)'][trial][i]],
-#                         'Stride velocity OMCS': [SbS_OMCS['Stride velocity (m/s)'][trial][i]],
-#                         'Initial contact OMCS': [SbS_OMCS['Initial contact'][trial][i]],
-#                         'Terminal contact OMCS': [SbS_OMCS['Terminal contact'][trial][i]] })
+                        'Stride time OMCS': [SbS_OMCS['Stride time (s)'][trial][i]],
+                        'Stride length OMCS': [SbS_OMCS['Stride length (m)'][trial][i]],
+                        'Stride velocity OMCS': [SbS_OMCS['Stride velocity (m/s)'][trial][i]],
+                        'Initial contact OMCS': [SbS_OMCS['Initial contact'][trial][i]],
+                        'Terminal contact OMCS': [SbS_OMCS['Terminal contact'][trial][i]] })
 
-#         if df2.isnull().values.any() == False:
-#             # for appending df2 at the end of df1
-#             R_formatted_data = R_formatted_data.append(df2, ignore_index = True)
-# R_formatted_data.to_excel('R_dataset.xlsx', index=False)
-# print ('Saved .xls file for statistical analysis in R')
+        if df2.isnull().values.any() == False:
+            # for appending df2 at the end of df1
+            R_formatted_data = R_formatted_data.append(df2, ignore_index = True)
+R_formatted_data.to_excel('R_dataset.xlsx', index=False)
+print ('Saved .xls file for statistical analysis in R')
 
 
 
@@ -642,10 +652,10 @@ plt.xticks(ticks=list(np.arange(start=-0.2, stop=0.21, step=0.02)), labels=list(
         
 
 
-if storedfile == False:
-    # Save data
-    f = open(save_as,"wb")
-    a = {'OMCS':OMCS, 'OMCS_gait_events':OMCS_gait_events, 'OMCS_spatiotemporals':OMCS_spatiotemporals, 'IMU':IMU, 'corresponding_files':corresponding_files, 'trialnames':trialnames, 'analyze_trialtypes':analyze_trialtypes}
-    pickle.dump(a,f)
-    f.close()
-    print ('Saved file locally')
+# if storedfile == False:
+#     # Save data
+#     f = open(save_as,"wb")
+#     a = {'OMCS':OMCS, 'OMCS_gait_events':OMCS_gait_events, 'OMCS_spatiotemporals':OMCS_spatiotemporals, 'IMU':IMU, 'corresponding_files':corresponding_files, 'trialnames':trialnames, 'analyze_trialtypes':analyze_trialtypes}
+#     pickle.dump(a,f)
+#     f.close()
+#     print ('Saved file locally')

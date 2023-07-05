@@ -3,7 +3,7 @@ Validation study - MOTOR project
 Sint Maartenskliniek study ID: 0900_Smarten_the_Clinic_V2
 
 Author:         C.J. Ensink, c.ensink@maartenskliniek.nl
-Last update:    19-07-2022
+Last update:    04-07-2023
 
 Functions for running the scripts for the validation study.
 This file:
@@ -70,18 +70,12 @@ def dataimport(datafolder, trialtype):
                         if entry.name == '900_V_pp01_SP01.c3d':
                             xsensnum[entry.name] = '005'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_01' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp01_SP03.c3d': # Fixed speed
-                            xsensnum[entry.name] = '007'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_01' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp01_FS_SS01.c3d':
                             xsensnum[entry.name] = '008'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_01' in item][0]+xsensnum[entry.name]
                         
                         elif entry.name == '900_V_pp03_SP01.c3d':
                             xsensnum[entry.name] = '010'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_03' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp03_FS01.c3d':
-                            xsensnum[entry.name] = '011'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_03' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp03_FS_SS01.c3d':
                             xsensnum[entry.name] = '012'
@@ -90,18 +84,12 @@ def dataimport(datafolder, trialtype):
                         elif entry.name == '900_V_pp04_SP01.c3d':
                             xsensnum[entry.name] = '010'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_04' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp04_FS01.c3d':
-                            xsensnum[entry.name] = '011'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_04' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp04_SS01.c3d':
                             xsensnum[entry.name] = '012'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_04' in item][0]+xsensnum[entry.name]
                             
                         elif entry.name == '900_V_pp05_SP01.c3d':
                             xsensnum[entry.name] = '008'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_05' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp05_FS01.c3d':
-                            xsensnum[entry.name] = '009'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_05' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp05_SS01.c3d':
                             xsensnum[entry.name] = '010'
@@ -110,18 +98,12 @@ def dataimport(datafolder, trialtype):
                         elif entry.name == '900_V_pp06_SP01.c3d':
                             xsensnum[entry.name] = '008'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_06' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp06_FS01.c3d':
-                            xsensnum[entry.name] = '009'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_06' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp06_FS_SS01.c3d':
                             xsensnum[entry.name] = '010'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_06' in item][0]+xsensnum[entry.name]
                             
                         elif entry.name == '900_V_pp07_SP01.c3d':
                             xsensnum[entry.name] = '010'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_07' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp07_FS01.c3d':
-                            xsensnum[entry.name] = '011'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_07' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp07_FS_SS01.c3d':
                             xsensnum[entry.name] = '012'
@@ -130,18 +112,12 @@ def dataimport(datafolder, trialtype):
                         elif entry.name == '900_V_pp08_SP02.c3d':
                             xsensnum[entry.name] = '010'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_08' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp08_FS01.c3d':
-                            xsensnum[entry.name] = '011'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_08' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp08_FS_SS02.c3d':
                             xsensnum[entry.name] = '013'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_08' in item][0]+xsensnum[entry.name]
                         
                         elif entry.name == '900_V_pp09_SP01.c3d':
                             xsensnum[entry.name] = '010'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_09' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp09_FS01.c3d':
-                            xsensnum[entry.name] = '011'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_09' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp09_FS_SS01.c3d':
                             xsensnum[entry.name] = '012'
@@ -150,18 +126,12 @@ def dataimport(datafolder, trialtype):
                         elif entry.name == '900_V_pp10_SP01.c3d':
                             xsensnum[entry.name] = '009'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_10' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp10_FS01.c3d':
-                            xsensnum[entry.name] = '010'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_10' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp10_SS01.c3d':
                             xsensnum[entry.name] = '011'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_10' in item][0]+xsensnum[entry.name]
                             
                         elif entry.name == '900_V_pp11_SP01.c3d':
                             xsensnum[entry.name] = '011'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_11' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp11_FS01.c3d':
-                            xsensnum[entry.name] = '012'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_11' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp11_FS_SS01.c3d':
                             xsensnum[entry.name] = '013'
@@ -170,18 +140,12 @@ def dataimport(datafolder, trialtype):
                         elif entry.name == '900_V_pp12_SP01.c3d':
                             xsensnum[entry.name] = '009'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_12' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp12_FS01.c3d':
-                            xsensnum[entry.name] = '010'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_12' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp12_FS_SS01.c3d':
                             xsensnum[entry.name] = '011'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_12' in item][0]+xsensnum[entry.name]
                                         
                         elif entry.name == '900_V_pp13_SP01.c3d':
                             xsensnum[entry.name] = '009'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_13' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp13_FS02.c3d':
-                            xsensnum[entry.name] = '011'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_13' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp13_FS_SS01.c3d':
                             xsensnum[entry.name] = '012'
@@ -190,18 +154,12 @@ def dataimport(datafolder, trialtype):
                         elif entry.name == '900_V_pp14_SP01.c3d':
                             xsensnum[entry.name] = '010'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_14' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp14_FS01.c3d':
-                            xsensnum[entry.name] = '011'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_14' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp14_FS_SS01.c3d':
                             xsensnum[entry.name] = '012'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_14' in item][0]+xsensnum[entry.name]
                             
                         elif entry.name == '900_V_pp15_SP01.c3d':
                             xsensnum[entry.name] = '000'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_15' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp15_FS01.c3d':
-                            xsensnum[entry.name] = '001'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_15' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp15_FS_SS01.c3d':
                             xsensnum[entry.name] = '003'
@@ -210,18 +168,12 @@ def dataimport(datafolder, trialtype):
                         elif entry.name == '900_V_pp16_SP01.c3d':
                             xsensnum[entry.name] = '009'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_16' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp16_FS01.c3d':
-                            xsensnum[entry.name] = '010'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_16' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp16_FS_SS01.c3d':
                             xsensnum[entry.name] = '011'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_16' in item][0]+xsensnum[entry.name]
                         
                         elif entry.name == '900_V_pp18_SP01.c3d':
                             xsensnum[entry.name] = '000'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_18' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp18_FS01.c3d':
-                            xsensnum[entry.name] = '001'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_18' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp18_FS_SS02.c3d':
                             xsensnum[entry.name] = '003'
@@ -230,18 +182,12 @@ def dataimport(datafolder, trialtype):
                         elif entry.name == '900_V_pp19_SP01.c3d':
                             xsensnum[entry.name] = '000'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_19' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp19_FS01.c3d':
-                            xsensnum[entry.name] = '001'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_19' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp19_FS_SS01.c3d':
                             xsensnum[entry.name] = '002'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_19' in item][0]+xsensnum[entry.name]
                             
                         elif entry.name == '900_V_pp20_SP01.c3d':
                             xsensnum[entry.name] = '009'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_20' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp20_FS01.c3d':
-                            xsensnum[entry.name] = '010'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_20' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp20_FS_SS01.c3d':
                             xsensnum[entry.name] = '011'
@@ -250,18 +196,12 @@ def dataimport(datafolder, trialtype):
                         elif entry.name == '900_V_pp21_SP01.c3d':
                             xsensnum[entry.name] = '011'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_21' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp21_FS01.c3d':
-                            xsensnum[entry.name] = '012'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_21' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp21_FS_SS01.c3d':
                             xsensnum[entry.name] = '013'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_21' in item][0]+xsensnum[entry.name]
                             
                         elif entry.name == '900_V_pp22_SP01.c3d':
                             xsensnum[entry.name] = '008'
-                            xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_22' in item][0]+xsensnum[entry.name]
-                        elif entry.name == '900_V_pp22_FS01.c3d':
-                            xsensnum[entry.name] = '009'
                             xsensfilepaths[entry.name] = [item for item in ppfoldersxsens if '900_V_22' in item][0]+xsensnum[entry.name]
                         elif entry.name == '900_V_pp22_FS_SS01.c3d':
                             xsensnum[entry.name] = '010'
@@ -505,10 +445,8 @@ def dataimport(datafolder, trialtype):
     
     # Sort files on task
     filesGRAIL = dict()
-    filesFS = dict() # Fixed speed
-    filesSP = dict() # Self-paced
-    filesSS = dict() # Stepping stones
-    filesCal = dict() # Calibration trial
+    filesREG = dict()
+    filesIRREG = dict()
     filesGBA = dict()
     filesSW = dict() # Straight ahead walking in measurement volume
 
@@ -518,24 +456,21 @@ def dataimport(datafolder, trialtype):
             removekeys.append(key)
     for key in removekeys:
         files.pop(key)
-        
-    for key in files:
+
+    for key in xsensfilepaths:
         # GRAIL trials
         if '_FS0' in key:
-            filesFS[key] = files[key]
+            filesREG[key] = files[key]
             filesGRAIL[key] = files[key]
         if '_SP0' in key:
             if key == '900_V_pp01_SP03.c3d': # Fixed speed trial, accidentily wrongly named
-                filesFS[key] = files[key]
-                filesGRAIL[key] = files[key]
+                pass
             else:
-                filesSP[key] = files[key]
+                filesREG[key] = files[key]
                 filesGRAIL[key] = files[key]
         if '_SS' in key:
-            filesSS[key] = files[key]
+            filesIRREG[key] = files[key]
             filesGRAIL[key] = files[key]
-        if 'Cal' in key:
-            filesCal[key] = files[key]
         # Overground trials
         if '_SW' in key:
             filesSW[key] = files[key]
@@ -561,7 +496,7 @@ def dataimport(datafolder, trialtype):
         
     # Read markerdata vicon        
     for i in range(0,len(trialnames)):
-        print('Start import of trial: ', trialnames[i], ' (',i,'/',len(trialnames),')')
+        print('Start vicon import of trial: ', trialnames[i], ' (',i,'/',len(trialnames),')')
         datavicon, VideoFrameRate, analogdata = readmarkerdata( files[trialnames[i]], analogdata=True ) #ParameterGroup, 
     
         # Check the markernames
@@ -589,9 +524,9 @@ def dataimport(datafolder, trialtype):
                 dataviconfilt['RANK'] = datavicon[key]
         
         # Two trials with some part 'flickering' markers; set these time periods to missing markerdata
-        if trialnames[i] == '900_V_pp12_FS01.c3d': # no data labeling (bad dataquality)
-            for key in dataviconfilt:
-                dataviconfilt[key][5522:5651,:] = 0
+        # if trialnames[i] == '900_V_pp12_FS01.c3d': # no data labeling (bad dataquality)
+        #     for key in dataviconfilt:
+        #         dataviconfilt[key][5522:5651,:] = 0
         if trialnames[i] == '900_V_pp21_FS_SS01.c3d': # no data labeling (bad dataquality)
             for key in dataviconfilt:
                 dataviconfilt[key][10800:10855,:] = 0
@@ -609,8 +544,10 @@ def dataimport(datafolder, trialtype):
         
         vicon[trialnames[i]] = dataviconfilt
                 
-        # Analyze xsens data
-        filepaths, sensortype = data_filelist(xsensfilepaths[trialnames[i]])
+    # Analyze xsens data
+    for i in range(0,len(trialnames)):
+        print('Start xsens import of trial: ', trialnames[i], ' (',i,'/',len(trialnames),')')
+        filepaths, sensortype, fs = data_filelist(xsensfilepaths[trialnames[i]])
         if len(filepaths) > 0:
             # Define data dictionary with all sensordata
             data_dict = data_preprocessor(filepaths, sensortype)
@@ -672,21 +609,12 @@ def sort_files(allfilenames):
     files['Overground'] = [] # Overground lab
     
     for key in allfilenames:
-        if '_FS0' in key:
-            if 'CVA' in key:
-                files['GRAIL stroke regular'].append(key)
-                files['GRAIL regular'].append(key)
-                files['GRAIL'].append(key)
-            elif '_V_' in key:
-                files['GRAIL healthy regular'].append(key)
-                files['GRAIL regular'].append(key)
-                files['GRAIL'].append(key)
-        
         if '_SP0' in key:
             if key == '900_V_pp01_SP03.c3d': # Fixed speed trial, accidentily wrongly named
-                files['GRAIL healthy regular'].append(key)
-                files['GRAIL regular'].append(key)
-                files['GRAIL'].append(key)
+                pass
+                # files['GRAIL healthy regular'].append(key)
+                # files['GRAIL regular'].append(key)
+                # files['GRAIL'].append(key)
             elif key == '900_V_pp16_SP02.c3d': # Turn trial, accidentily wrongly named
                 pass
             else:
