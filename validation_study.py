@@ -277,8 +277,8 @@ histogram_gait_events(strides_overground_IMU['Terminal contact'], strides_overgr
 
 
 for parameter in mean_IMU['Healthy']['Regular']:
-    bland_altman_plot_spatiotemporals_4(mean_IMU['Healthy']['Regular'][parameter], mean_OMCS['Healthy']['Regular'][parameter], mean_IMU['Stroke']['Regular'][parameter], mean_OMCS['Stroke']['Regular'][parameter], mean_IMU['Healthy']['Irregular'][parameter], mean_OMCS['Healthy']['Irregular'][parameter], mean_IMU['Stroke']['Irregular'][parameter], mean_OMCS['Stroke']['Irregular'][parameter], eventType = str(parameter), unit='')
-    bland_altman_plot_spatiotemporals_4(variability_IMU['Healthy']['Regular'][parameter], variability_OMCS['Healthy']['Regular'][parameter], variability_IMU['Stroke']['Regular'][parameter], variability_OMCS['Stroke']['Regular'][parameter], variability_IMU['Healthy']['Irregular'][parameter], variability_OMCS['Healthy']['Irregular'][parameter], variability_IMU['Stroke']['Irregular'][parameter], variability_OMCS['Stroke']['Irregular'][parameter], eventType = str(parameter), unit='')
+    bland_altman_plot_spatiotemporals_4(mean_IMU['Healthy']['Regular'][parameter], mean_OMCS['Healthy']['Regular'][parameter], mean_IMU['Healthy']['Irregular'][parameter], mean_OMCS['Healthy']['Irregular'][parameter], mean_IMU['Stroke']['Regular'][parameter], mean_OMCS['Stroke']['Regular'][parameter], mean_IMU['Stroke']['Irregular'][parameter], mean_OMCS['Stroke']['Irregular'][parameter], eventType = str(parameter), unit='')
+    bland_altman_plot_spatiotemporals_4(variability_IMU['Healthy']['Regular'][parameter], variability_OMCS['Healthy']['Regular'][parameter], variability_IMU['Healthy']['Irregular'][parameter], variability_OMCS['Healthy']['Irregular'][parameter], variability_IMU['Stroke']['Regular'][parameter], variability_OMCS['Stroke']['Regular'][parameter], variability_IMU['Stroke']['Irregular'][parameter], variability_OMCS['Stroke']['Irregular'][parameter], eventType = str(parameter), unit='')
 
 
 meancovimuHR=dict()
