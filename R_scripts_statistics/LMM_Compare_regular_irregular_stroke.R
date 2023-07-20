@@ -50,8 +50,8 @@ names(gaitdata)[names(gaitdata) == "Terminal contact sensor"] <- "tc_sensor"
 names(gaitdata)[names(gaitdata) == "Terminal contact OMCS"] <- "tc_omcs"
 
 ## Set reference category to healthy
-gaitdata$Trialtype[gaitdata$Trialtype=="GRAIL healthy regular"] = "aGRAIL healthy regular"
-gaitdata$Trialtype[gaitdata$Trialtype=="GRAIL healthy irregular"] = "bGRAIL healthy irregular" 
+gaitdata$Trialtype[gaitdata$Trialtype=="GRAIL stroke regular"] = "aGRAIL stroke regular"
+gaitdata$Trialtype[gaitdata$Trialtype=="GRAIL stroke irregular"] = "bGRAIL stroke irregular" 
 
 
 ## COMPARE REGULAR VS IRREGULAR IN HC
@@ -61,8 +61,8 @@ params <- c('ic', 'tc', 'st', 'sl', 'vel')
 for (param in params)
 {
   print(param)  
-  trialtype1 = 'aGRAIL healthy regular'
-  trialtype2 = 'bGRAIL healthy irregular'
+  trialtype1 = 'aGRAIL stroke regular'
+  trialtype2 = 'bGRAIL stroke irregular'
   data= filter(gaitdata, Trialtype == trialtype1 | Trialtype == trialtype2)
     
   new = paste(param, '_sensor', sep="")
@@ -94,7 +94,7 @@ for (param in params)
     qqnorm(resid(lmm))
     qqline(resid(lmm))
     
-    print('linear mixed model to compare regular with irregular in HC')
+    print('linear mixed model to compare regular with irregular in stroke')
     # Show output of linear mixed models
     print(summ(lmm, confint = TRUE, digits = 3))
         

@@ -376,6 +376,22 @@ print('Mann-Whitney_U test for differences between weight of the groups: ', stat
 print('Mann-Whitney_U test for differences between age of the groups: ', stats.mannwhitneyu(agesHealthy, agesStroke))
 print('Chi-square test for differences between genderdistribution of the groups: ', stats.chisquare(f_obs=genderHealthy/20, f_exp=genderStroke/10))
 
+def confidence_interval(x1, x2):
+    alpha = 0.05                                                 # significance level = 5%
+    n1, n2 = len(x1), len(x2)                                    # sample sizes
+    s1, s2 = np.var(x1, ddof=1), np.var(x2, ddof=1)              # sample variances
+    s = np.sqrt(((n1 - 1) * s1 + (n2 - 1) * s2) / (n1 + n2 - 2)) # pooled standard deviation
+    df = n1 + n2 - 2                                             # degrees of freedom
+    t = stats.t.ppf(1 - alpha/2, df)                             # t-critical value for 95% CI
+    
+    lower = (np.mean(x1) - np.mean(x2)) - t * np.sqrt(1 / len(x1) + 1 / len(x2)) * s
+    upper = (np.mean(x1) - np.mean(x2)) + t * np.sqrt(1 / len(x1) + 1 / len(x2)) * s
+    return np.mean(x1)-np.mean(x2), np.array([lower, upper])
+
+confidence_interval(agesHealthy, agesStroke)
+confidence_interval(heightsHealthy, heightsStroke)
+confidence_interval(weightsHealthy, weightsStroke)
+
 # Uncomment this part if you wish to save an .xls file for further statistical analysis in R.
 R_formatted_data = pd.DataFrame(columns=(['SubjectID', 'Trialtype', 'StrideNr', 'Stride time sensor', 'Stride length sensor', 'Stride velocity sensor', 'Stride time OMCS', 'Stride length OMCS', 'Stride velocity OMCS']))
 for trial in SbS_IMU['Stride length (m)']:
