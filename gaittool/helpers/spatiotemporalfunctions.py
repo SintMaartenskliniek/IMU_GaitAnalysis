@@ -1511,6 +1511,15 @@ def trunk_ROM(data):
         # if np.min(euler[idxdifs[i]:idxdifs[i+1]]) > 50:
         eulerZ[idxdifs[i]:idxdifs[i+1]] = -1*(eulerZ[idxdifs[i]:idxdifs[i+1]]) - np.diff([eulerZ[idxdifs[i]], -1*eulerZ[idxdifs[i]]])
     
+    # # Low pass filter euler angles
+    fc = 5  # Cut-off frequency of the filter
+    w = fc / (sample_frequency / 2) # Normalize the frequency
+    N = 2 # Order of the butterworth filter
+    filter_type = 'lowpass' # Type of the filter
+    b, a = signal.butter(N, w, filter_type)
+    eulerX = signal.filtfilt(b, a, eulerX) # Apply filter on data
+    eulerZ = signal.filtfilt(b, a, eulerZ) # Apply filter on data
+        
     rom_per_strideX = np.zeros((len(IC),1))
     rom_per_strideZ = np.zeros((len(IC),1))
     for i in range(0,len(IC)-1):
@@ -1531,13 +1540,7 @@ def trunk_ROM(data):
     data['Spatiotemporals']['Trunk transverse range of motion (deg)'] = np.round(trunkROMX, 1)
     data['Sternum']['derived']['RoM per steady-state stride Z'] = rom_per_strideZ
     data['Spatiotemporals']['Trunk coronal range of motion (deg)'] = np.round(trunkROMZ, 1)
-    # # Low pass filter fGYRy
-    # fc = 5  # Cut-off frequency of the filter
-    # w = fc / (sample_frequency / 2) # Normalize the frequency
-    # N = 2 # Order of the butterworth filter
-    # filter_type = 'lowpass' # Type of the filter
-    # b, a = signal.butter(N, w, filter_type)
-    # GYRz = signal.filtfilt(b, a, GYRz) # Apply filter on data
+    
     
     return data
 
