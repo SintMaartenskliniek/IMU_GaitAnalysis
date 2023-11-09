@@ -940,6 +940,7 @@ def stridelength(data, errors, showfigure):
     
     # Method: Muir et al.
     # Filtered on not-turning strides and remove every 2 strides (so 1 left and 1 right stride) around the turning strides
+    # Additionally, remove the first 2 and last 2 strides of the trial
     data['Left foot']['derived']['Stride length - no 2 steps around turn (m)'] = np.transpose(np.array([[], [], []]))
     data['Right foot']['derived']['Stride length - no 2 steps around turn (m)'] = np.transpose(np.array([[], [], []]))
     
@@ -989,6 +990,7 @@ def stridelength(data, errors, showfigure):
     
     # Method: No 1 stride around turn
     # Gait speed straight walking 1 stride around turn removed
+    # Additionally, remove the first and last stride of the trial
     data['Left foot']['derived']['Stride length - no 1 steps around turn (m)'] = np.transpose(np.array([[], [], []]))
     data['Right foot']['derived']['Stride length - no 1 steps around turn (m)'] = np.transpose(np.array([[], [], []]))
     
