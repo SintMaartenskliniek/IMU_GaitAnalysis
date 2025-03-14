@@ -1,8 +1,8 @@
 """
 Gait event functions
 
-Last update: June 2021
-Author: Carmen Ensink
+Last update: March 2025
+Author: Carmen Ensink, MvM
 
 """
 import numpy as np
@@ -12,50 +12,38 @@ def TSwOnset(gyroscopedata, indexToeOff):
     #                indexToeOff; index numbers of Toe Off points
     #      OUTPUT:   indexTerminalSwingOnset; index numbers of Terminal-Swing onset points
     
-    #  Terminal-Swing Onset; zero-crossing (positive to negative)
+    #   Old: Terminal-Swing Onset; zero-crossing (positive to negative)
+    #   New 03-14-2025: Incorrect calculation Terminal-Swing Onset
+    #   Update calculation Terminal-Swing Onset by MvM
+    #   Defined as the peak in the gyroscopic data between the zero-crossing neg -> pos and 70% of the gaitcycle between TO-TO (Behboodi et al. 2019)
 
     allTSwOns = np.array([])
+    cycle_len = np.array([])
     for i in range(0,(len(indexToeOff)-1)):
         databetweenTO = gyroscopedata[indexToeOff[i]:indexToeOff[i+1]]
+        cycle_len = np.append(cycle_len,len(databetweenTO))
         firstnegative = np.where(databetweenTO < 0)[0]
-        if len(firstnegative) != 0:
-            firstnegative = np.where(databetweenTO < 0)[0][0]
+        firstpositive = np.where(databetweenTO > 0)[0]
+        if len(firstpositive)!=0:
+            search_range_begin = firstpositive[0]
         else:
-            firstnegative = 1
-        lastpositive = firstnegative-1
-        if lastpositive == -1:
-            lastpositive = 0
-        diffneg = abs(databetweenTO[firstnegative])
-        diffpos = abs(databetweenTO[lastpositive])
-        if diffneg<diffpos:
-            idxTSwOns = indexToeOff[i]+firstnegative-1
-        elif diffpos<diffneg:
-            idxTSwOns = indexToeOff[i]+lastpositive-1
-        elif diffpos == diffneg:
-            idxTSwOns = indexToeOff[i]+firstnegative-1
-    
-        allTSwOns = np.append(allTSwOns, idxTSwOns)
+            search_range_begin = 0
+
+        search_range_end = int(np.floor(0.7*cycle_len[-1]))
+        idxTSwOns = indexToeOff[i] + np.where(databetweenTO == np.max(databetweenTO[search_range_begin:search_range_end]))
+        allTSwOns = np.append(allTSwOns, int(idxTSwOns))
     
     lastTO = indexToeOff[-1]
     dataafterLastTO = gyroscopedata[lastTO:]
-    firstnegative = np.where(dataafterLastTO < 0)[0]
-    if len(firstnegative) != 0:
-        firstnegative = np.where(dataafterLastTO < 0)[0][0]
-    else:
-        firstnegative = 1
-    
-    lastpositive = firstnegative-1
-    diffneg = abs(dataafterLastTO[firstnegative])
-    diffpos = abs(dataafterLastTO[lastpositive])
-    if diffneg < diffpos:
-        idxTSwOns = indexToeOff[-1]+firstnegative-1
-    elif diffpos < diffneg:
-        idxTSwOns = indexToeOff[-1]+lastpositive-1
-    elif diffpos == diffneg:
-        idxTSwOns = indexToeOff[-1]+firstnegative-1
+    if len(dataafterLastTO) > 0.5*np.median(cycle_len):
+        firstpositive = np.where(dataafterLastTO > 0)[0]
+        if len(firstpositive) != 0:
+            search_range_begin = firstpositive[0]
+        else:
+            search_range_begin = 0
+        idxTSwOns = lastTO + np.where(dataafterLastTO == np.max(dataafterLastTO[search_range_begin:]))
+        allTSwOns = np.append(allTSwOns, int(idxTSwOns))
 
-    allTSwOns = np.append(allTSwOns, idxTSwOns)
     indexTerminalSwingOnset = (np.sort(allTSwOns)).astype('int64')
-
 
     return indexTerminalSwingOnset
